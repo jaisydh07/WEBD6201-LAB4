@@ -47,9 +47,24 @@ export function DisplayLoginPage(req:Request, res:Response, next:NextFunction): 
         });
     }
 
-    return res.redirect('/home');
+    return res.redirect('/contact-list');
 }
 
+export function DisplayRegisterPage(req:Request, res:Response, next:NextFunction): void
+{
+    if(!req.user)
+    {
+        return res.render('index', 
+        { 
+            title: 'Register', 
+            page: 'register', 
+            messages: req.flash('registerMessage'),
+            displayName: UserDisplayName(req)
+        });
+    }
+
+    return res.redirect('/contact-list');
+}
 
 // Process Page Functions
 
@@ -78,9 +93,46 @@ export function ProcessLoginPage(req:Request, res:Response, next:NextFunction): 
                 return next(err);
             }
 
-            return res.redirect('/home');
+            return res.redirect('/contact-list');
         });
     })(req, res, next);
+}
+
+export function ProcessRegisterPage(req:Request, res:Response, next:NextFunction): void
+{
+    // instantiate a new user object
+    let newUser = new User
+    ({
+        username: req.body.username,
+        emailAddress: req.body.EmailAddress,
+        displayName: req.body.FirstName + " " + req.body.LastName 
+    });
+
+    User.register(newUser, req.body.password, (err) => 
+    {
+        if(err){
+            console.error('Error: Inserting New User');
+            if(err.name == "UserExistsError")
+            {
+                req.flash('registerMessage', 'Registration Error');
+                console.error('Error: User Already Exists');
+            }
+            return res.redirect('/register');
+        }
+
+        // automatically login the user
+        return passport.authenticate('local')(req, res, ()=>
+        {
+            return res.redirect('/contact-list');
+        });
+    });
+}
+
+export function ProcessLogoutPage(req:Request, res:Response, next:NextFunction): void
+{
+    req.logout();
+    console.log("User Logged Out");
+    res.redirect('/login');
 }
 
 export function ProcessContactPage(req:Request, res:Response, next:NextFunction): void

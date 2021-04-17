@@ -8,7 +8,6 @@ namespace core
     private m_fullName: string;
     private m_contactNumber: string;
     private m_emailAddress: string;
-    private m_message: string;
 
     // getters and setters
     get FullName(): string 
@@ -40,16 +39,6 @@ namespace core
     {
       this.m_emailAddress = value;
     }
-
-    get Message(): string 
-    {
-      return this.m_message;
-    }
-  
-    set Message(value:string) 
-    {
-      this.m_message = value;
-    }
   
     // constructor
 
@@ -57,14 +46,12 @@ namespace core
      * @param {string} fullName 
      * @param {string} contactNumber 
      * @param {string} emailAddress 
-     * @param {string} message
      */
-    constructor(fullName = "", contactNumber = "", emailAddress = "", message = "") 
+    constructor(fullName = "", contactNumber = "", emailAddress = "") 
     {
       this.FullName = fullName;
       this.ContactNumber = contactNumber;
       this.EmailAddress = emailAddress;
-      this.Message = message;
     }
 
     // methods
@@ -76,7 +63,7 @@ namespace core
      */
     public toString(): string 
     {
-      return `Full Name     : ${this.FullName} \nContact Number: ${this.ContactNumber}\nEmail Address : ${this.EmailAddress}\nMessage : ${this.Message}`;
+      return `Full Name     : ${this.FullName} \nContact Number: ${this.ContactNumber}\nEmail Address : ${this.EmailAddress}`;
     }
 
     /**
@@ -89,8 +76,7 @@ namespace core
       return {
         "FullName": this.FullName,
         "ContactNumber": this.ContactNumber,
-        "EmailAddress": this.EmailAddress,
-        "Message" : this.Message
+        "EmailAddress": this.EmailAddress
       }
     }
 
@@ -105,7 +91,6 @@ namespace core
       this.FullName = data.FullName;
       this.ContactNumber = data.ContactNumber;
       this.EmailAddress = data.EmailAddress;
-      this.Message = data.Message;
     }
 
     /**
@@ -115,9 +100,9 @@ namespace core
      */
     public serialize(): string
     {
-      if(this.FullName !== "" && this.ContactNumber !== "" && this.EmailAddress !== "" && this.Message != "")
+      if(this.FullName !== "" && this.ContactNumber !== "" && this.EmailAddress !== "")
       {
-        return `${this.FullName},${this.ContactNumber},${this.EmailAddress},${this.Message}`;
+        return `${this.FullName},${this.ContactNumber},${this.EmailAddress}`;
       }
       else 
       {
@@ -138,7 +123,6 @@ namespace core
       this.FullName = propertyArray[0];
       this.ContactNumber = propertyArray[1];
       this.EmailAddress = propertyArray[2];
-      this.Message = propertyArray[3];
     }
   }
 

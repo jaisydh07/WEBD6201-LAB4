@@ -5,8 +5,7 @@ const ContactSchema = new Schema
 ({
     FullName: String,
     EmailAddress: String,
-    ContactNumber: String,
-    Message: String
+    ContactNumber: String
 },
 {
     collection: "contacts"
